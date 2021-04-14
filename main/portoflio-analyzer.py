@@ -94,10 +94,21 @@ for ticker in tickers:
     #print(prices[today])
     #pd.concat(df_list)
 
-df_list.sort_values(by=['1 Year'])
+df_list.sort_values(['1 Week'], inplace=True,ascending=False)
+df_list = df_list.head(24)
+print(df_list)
+
+df_list.sort_values(['1 Month'], inplace=True,ascending=False)
+df_list = df_list.head(12)
+print(df_list)
+
+df_list.sort_values(['1 Year'], inplace=True,ascending=False)
+df_list = df_list.head(6)
 print(df_list)
 
 
+df_list = df_list[(df_list[['Daily']] < 0).all(1)]
+print(df_list)
 
 
 template_vars = {"title" : "Stocks",
@@ -109,3 +120,6 @@ html_out = template.render(template_vars)
 text_file = open("index.html", "w")
 text_file.write(html_out)
 text_file.close()
+
+
+df_list.to_csv (r'export_dataframe.csv', index = False, header=True)
